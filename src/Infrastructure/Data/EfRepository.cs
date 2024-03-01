@@ -52,6 +52,11 @@ namespace Infrastructure.Data
            return await _db.Set<T>().ToListAsync(specification);
         }
 
+        public async Task<List<T>> GetAllAsync()
+        {
+          return await _db.Set<T>().ToListAsync();
+        }
+
         public async Task<T?> GetByIdAsync(int id)
         {
             return await _db.FindAsync<T>(id);
