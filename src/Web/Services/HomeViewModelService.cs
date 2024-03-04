@@ -36,7 +36,7 @@ namespace Web.Services
                     PictureUri = x.PictureUri ?? "noimage.jpg"
                 }
                 ).ToList(),
-                Brands = (await _productRepository.GetAllAsync()).Select(x =>
+                Brands = (await _brandRepository.GetAllAsync()).Select(x =>
                  new SelectListItem(x.Name, x.Id.ToString())).ToList(),
                 Categories = (await _categoryRepository.GetAllAsync()).Select(x =>
                  new SelectListItem(x.Name, x.Id.ToString())).ToList()

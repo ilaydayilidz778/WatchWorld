@@ -3,6 +3,8 @@ using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Web.Interfaces;
+using Web.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,10 +16,8 @@ builder.Services.AddDbContext<WatchWorldContext>(options =>
 builder.Services.AddDbContext<AppIdentityDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("AppIdentityDbContext")));
 
-builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>)); 
-// EfRepository çöpe attýk ve AdoNetRepository eklemek istedik. Bu Infrastructer ara bir katman olduðundan
-// ve doðrundan baðýmlýlk içermediðinden projedeki bu gibi deðiþikleri kod karmaþasýna sebep olmadan
-// saðlayabilir.
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped<IHomeViewModelService, HomeViewModelService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
@@ -42,6 +42,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseRequestLocalization("en-US");
 
 app.UseRouting();
 
