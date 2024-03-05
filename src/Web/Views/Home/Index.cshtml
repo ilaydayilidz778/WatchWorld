@@ -50,3 +50,28 @@
         </div>
     }
 </div>
+
+<nav aria-label="Pagination">
+    <ul class="pagination">
+        @if (Model.PaginationInfo.HasPrevious)
+        {
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+        }
+
+        @for (int i = 1; i <= Model.PaginationInfo.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PaginationInfo.PageId ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pageId="@i">@i</a>
+            </li>
+        }
+
+        @if (Model.PaginationInfo.HasNext)
+        {
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+        }
+    </ul>
+</nav>
