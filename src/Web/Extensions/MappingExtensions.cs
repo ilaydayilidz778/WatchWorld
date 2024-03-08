@@ -5,7 +5,7 @@ namespace Web.Extensions
 {
     public static class MappingExtensions
     {
-        public static BasketViewModel ToBasketViewModel(this Basket basket)
+        public static BasketViewModel ToBasketViewModel(this Basket basket) // this ile ekledik web katmanında basket. metodlarında göreceğiz.
         {
             return new BasketViewModel()
             {
@@ -18,9 +18,9 @@ namespace Web.Extensions
                     ProductId = x.ProductId,
                     PictureUri = x.Product.PictureUri ?? "noimage.jpg",
                     UnitPrice = x.Product.Price
-                }).ToList(),
+                }).ToList()
             };
         }
     }
-    }
+    
 }

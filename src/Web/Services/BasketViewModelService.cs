@@ -19,16 +19,16 @@ namespace Web.Services
 
         private string _createdAnonId = null!;
 
-        // benzersiz bir geçici id oluştur, cookilerde depola, gizli bir field'a aktae ve döndür.
         private string CreateAnonymousId()
         {
-            if (_createdAnonId != null) return _createdAnonId;
+            if (_createdAnonId != null) 
+                return _createdAnonId;
 
             _createdAnonId = Guid.NewGuid().ToString();
             HttpContext.Response.Cookies.Append(Constants.BASKET_COOKIE, _createdAnonId, new CookieOptions()
             {
                 Expires = DateTime.Now.AddDays(14),
-                IsEssential = true // kullanıcının iznini önemsemeden cookide tutulmasını sağlar
+                IsEssential = true 
             });
 
             return _createdAnonId;
@@ -46,6 +46,12 @@ namespace Web.Services
 
             return basket.ToBasketViewModel();
 
+        }
+
+        public async Task<BasketViewModel> GetBasketViewModelAsync()
+        {
+            var basket = await _basketService.GetOrCreateBasketAsync(BuyerId); // her ziyaretçi için yeni bir sepet oluşturulacak.
+            return basket.ToBasketViewModel();
         }
     }
 }

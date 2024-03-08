@@ -26,7 +26,7 @@ namespace ApplicationCore.Services
         public async Task<Basket> AddItemBasketAsync(string buyerId, int productId, int quantity)
         {
             var basket = await GetOrCreateBasketAsync(buyerId);
-            var basketItem = basket.Items.FirstOrDefault(x => x.Id == productId);
+            var basketItem = basket.Items.FirstOrDefault(x => x.ProductId == productId);
 
             if (basketItem != null)
             {
@@ -52,7 +52,7 @@ namespace ApplicationCore.Services
         public async Task DeleteBasketItemAsync(string buyerId, int productId)
         {
             var basket = await GetOrCreateBasketAsync(buyerId);
-            var basketItem = basket.Items.FirstOrDefault(x => x.Id == productId);
+            var basketItem = basket.Items.FirstOrDefault(x => x.ProductId == productId);
             if (basketItem != null)
             {
                 await _basketItemRepository.DeleteAsync(basketItem);

@@ -43,8 +43,8 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     @p.Price.ToString("c2")
-                    <a href="#" class="btn btn-sm btn-success">
-                        <i class="fa-solid fa-cart-plus fa-lg"></i>
+                    <a data-add-item="@p.Id" href="#" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-cart-plus"></i>
                     </a>
                 </div>
             </div>
@@ -109,3 +109,18 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $("[data-add-item]").click(function (e) {
+            e.preventDefault();
+            const productId = $(this).data("add-item");
+            const url = "@Url.Action("AddItem", "Basket")";
+            $.post(url, { productId }).then(data => {
+                console.log(data);
+                alert(productId +  "id sahip ürün sepetinize eklenmiştir.")
+            });
+           
+        })
+    </script>
+}
