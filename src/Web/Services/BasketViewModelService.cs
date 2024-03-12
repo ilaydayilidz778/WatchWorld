@@ -11,6 +11,7 @@ namespace Web.Services
     {
         private readonly IBasketService _basketService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IOrderService _orderService;
 
         private HttpContext HttpContext => _httpContextAccessor.HttpContext!;
         private string? UserId => HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -22,23 +23,24 @@ namespace Web.Services
 
         private string CreateAnonymousId()
         {
-            if (_createdAnonId != null) 
+            if (_createdAnonId != null)
                 return _createdAnonId;
 
             _createdAnonId = Guid.NewGuid().ToString();
             HttpContext.Response.Cookies.Append(Constants.BASKET_COOKIE, _createdAnonId, new CookieOptions()
             {
                 Expires = DateTime.Now.AddDays(14),
-                IsEssential = true 
+                IsEssential = true
             });
 
             return _createdAnonId;
         }
 
-        public BasketViewModelService(IBasketService basketService, IHttpContextAccessor httpContextAccessor)
+        public BasketViewModelService(IBasketService basketService, IHttpContextAccessor httpContextAccessor, IOrderService orderService)
         {
             _basketService = basketService;
             _httpContextAccessor = httpContextAccessor;
+            _orderService = orderService;
         }
 
         public async Task<BasketViewModel> AddItemToBasketAsync(int productId, int quantity)
@@ -57,7 +59,7 @@ namespace Web.Services
 
         public async Task EmptyBasketAsync()
         {
-           await _basketService.EmptyBasketAsync(BuyerId);
+            await _basketService.EmptyBasketAsync(BuyerId);
         }
 
         public async Task DeleteBasketItemAsync(int productId)
@@ -67,7 +69,7 @@ namespace Web.Services
 
         public async Task<BasketViewModel> SetQuantitiesAsync(Dictionary<int, int> quantities)
         {
-           var basket = await _basketService.SetQuantitiesAsync(BuyerId, quantities);
+            var basket = await _basketService.SetQuantitiesAsync(BuyerId, quantities);
             return basket.ToBasketViewModel();
         }
 
@@ -77,6 +79,22 @@ namespace Web.Services
                 return;
             await _basketService.TransferBasketAsync(AnonId, UserId);
             HttpContext.Response.Cookies.Delete(Constants.BASKET_COOKIE);
+        }
+
+        public async Task CheckoutAsync(string street, string city, string? state, string country, string zipCode)
+        {
+            var shippingAddress = new Address()
+            {
+                Street = street,
+                City = city,
+                State = state,
+                Country = country,
+                ZipCode = zipCode
+            };
+
+            var order = await _orderService.CreateOrderAsync(BuyerId, shippingAddress);
+
+            await EmptyBasketAsync();
         }
     }
 }
