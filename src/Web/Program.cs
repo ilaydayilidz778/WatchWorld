@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Web.Extensions;
 using Web.Interfaces;
 using Web.Services;
 
@@ -53,6 +54,8 @@ app.UseRequestLocalization("en-US");
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseBasketTransfer();
 
 app.MapControllerRoute(
     name: "default",

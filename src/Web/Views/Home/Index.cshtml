@@ -118,9 +118,9 @@
             const url = "@Url.Action("AddItem", "Basket")";
             $.post(url, { productId }).then(data => {
                 console.log(data);
-                alert(productId +  "id sahip ürün sepetinize eklenmiştir.")
+                $(".basket-total-items").text(data.totalItems);
+                successMessage("Item added to your basket.");
             });
-           
         })
     </script>
 }

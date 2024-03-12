@@ -62,7 +62,7 @@ namespace ApplicationCore.Services
         public async Task EmptyBasketAsync(string buyerId)
         {
             var basket = await GetOrCreateBasketAsync(buyerId); //bu metod çalıştığında eğer ki bir sepet yoksa sepet oluşturulup kaldırılmaya çalışılacak
-            foreach (var item in basket.Items)
+            foreach (var item in basket.Items.ToList())
             {
                 await _basketItemRepository.DeleteAsync(item);
             }
