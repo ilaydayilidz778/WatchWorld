@@ -40,6 +40,7 @@ namespace Web.Models
 
         [Required]
         [MaxLength(180)]
+        [Display(Name = "CVV")]
         [RegularExpression(@"^[0-9]{3}$", ErrorMessage = "Invalid {0}.")]
         public string CCCvv { get; set; } = null!;
     }

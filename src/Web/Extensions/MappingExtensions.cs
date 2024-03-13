@@ -16,6 +16,7 @@ namespace Web.Extensions
                     Id = x.Id,
                     Quantity = x.Quantity,
                     ProductId = x.ProductId,
+                    ProductName = x.Product.Name,
                     PictureUri = x.Product.PictureUri ?? "noimage.jpg",
                     UnitPrice = x.Product.Price
                 }).ToList()

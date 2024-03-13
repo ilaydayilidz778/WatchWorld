@@ -19,7 +19,7 @@ and the Generic Repository Pattern
 - Microsoft.EntityFrameworkCore.Design
 
 ## UnitTests
-...
+- NSubstitute
 
 ## Migrations
 Before running the following commands, ensure that "Web" is set as the
